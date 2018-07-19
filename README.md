@@ -1,10 +1,19 @@
-**Device side receive device lists and retrive hardware info** 
+# Retrieve hardware info based on device id
 
-Dependencies:
+1. Consume device id from main server
+2. Check whether the local device is in the list
+3. Run retrive HWInfo API
+4. Route it to queue server side
+5. Compare Mongo DB data and HWInfo data 
+6. Insert if SUCESS
+7. send log if FAIL 
+
+
+### **Dependencies:**
 
 * Python 3.5
 * flask 1.0.2
 * pika 0.11.0
 * requests 2.19.1
 
- RabbitMQ Version: 3.7.7
+#### RabbitMQ Version: 3.7.7(Erlang 21.0)
