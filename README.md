@@ -18,7 +18,7 @@
 
 #### RabbitMQ Version: 3.7.7(Erlang 21.0)
 
-# Json Hardware details Format
+### Hardware information Json format
 ```
 {
   "CPUinfo": {
