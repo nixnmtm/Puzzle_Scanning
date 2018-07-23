@@ -19,7 +19,7 @@
 #### RabbitMQ Version: 3.7.7(Erlang 21.0)
 
 # Json Hardware details Format
-"""
+```
 {
   "CPUinfo": {
     "Architecture": "x86_64",
@@ -59,4 +59,4 @@
     }
   }
 }
-"""
+```
