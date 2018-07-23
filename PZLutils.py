@@ -28,7 +28,7 @@ class PZLutils(object):
             hwinfo = apiResponse.text
             return hwinfo
         else:
-            apiResponse.raise_for_status()
+            return apiResponse.raise_for_status()
 
     def retrieve_hwinfo(self, data, url):
 
@@ -41,8 +41,8 @@ class PZLutils(object):
                 if self._this_device_name() in data[i]:
                     return self.call_HWInfo_api(url)
                 else:
-                    return "ERROR"
-                    #raise ResourceWarning("Device {} is not listed".format(self._this_device_name()))
+                    #return "ERROR"
+                    raise ResourceWarning("Device {} is not listed".format(self._this_device_name()))
 
 # pzl = PZLutils()
 # #json_data = json.loads(body)

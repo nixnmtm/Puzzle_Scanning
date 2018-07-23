@@ -7,12 +7,12 @@ import json
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
 channel = connection.channel()
 
-channel.exchange_declare(exchange='logs',
+channel.exchange_declare(exchange='devids',
                          exchange_type='fanout')
 data = {}
 data['devices'] = ["{0:03}".format(i) for i in range(5)]
 json_data = json.dumps(data)
-channel.basic_publish(exchange='logs',
+channel.basic_publish(exchange='devids',
                       routing_key='',
                       body=json_data)
 
