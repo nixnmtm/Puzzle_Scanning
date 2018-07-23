@@ -8,14 +8,14 @@ import requests
 
 class PZLutils(object):
 
-    def _this_device_name(self):
+    def _this_device_slno(self):
 
         """Get device name from the device - This is a dummy"""
         """Getting a random name from a list to check"""
 
         dev_list = ["{0:03}".format(i) for i in range(10)]
         pzl_devname = random.choice(dev_list)
-        print("This Device Name: {}".format(pzl_devname))
+        print("Device Sl.No: {}".format(pzl_devname))
         return pzl_devname
 
     def call_HWInfo_api(self, url):
@@ -32,17 +32,17 @@ class PZLutils(object):
 
     def retrieve_hwinfo(self, data, url):
 
-        """If device name in query retrieve hardware information of the device"""
+        """If device serial number in query retrieve hardware information of the device"""
 
         #data = json.loads(data)  # convert the json into python compatible
         data = json.loads(data)
         for i in data:
             if i == "devices":
-                if self._this_device_name() in data[i]:
+                if self._this_device_slno() in data[i]:
                     return self.call_HWInfo_api(url)
                 else:
                     #return "ERROR"
-                    raise ResourceWarning("Device {} is not listed".format(self._this_device_name()))
+                    raise ResourceWarning("Device {} is not listed".format(self._this_device_slno()))
 
 # pzl = PZLutils()
 # #json_data = json.loads(body)
