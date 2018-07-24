@@ -39,16 +39,9 @@ class PZLutils(object):
         for i in data:
             if i == "devices":
                 if self._this_device_slno() in data[i]:
+                    print("Device Sl.No Matched. \nHardware details retrieved and sent to main server.")
                     return self.call_HWInfo_api(url)
                 else:
+                    return "Device Sl.No not matched"
                     #return "ERROR"
-                    raise ResourceWarning("Device {} is not listed".format(self._this_device_slno()))
-
-# pzl = PZLutils()
-# #json_data = json.loads(body)
-# dat = {}
-# dat["devices"] = ["{0:03}".format(i) for i in range(5)]
-# json_data = json.dumps(dat)  # data will be in json format
-# url = 'http://127.0.0.1:5000/puzzle/api/v1/hwinfo'
-#
-# print(pzl.retrieve_hwinfo(json_data, url))
+                    #raise ResourceWarning("Me ({}) not listed. No work oooh oohhh (-_-).".format(self._this_device_slno()))
