@@ -44,4 +44,13 @@ class PZLutils(object):
                 else:
                     return "Device Sl.No not matched"
                     #return "ERROR"
-                    #raise ResourceWarning("Me ({}) not listed. No work oooh oohhh (-_-).".format(self._this_device_slno()))
+                    #raise ResourceWarning("Me ({}) not listed.".format(self._this_device_slno()))
+
+    def read_json(self, json_data):
+        if type(json_data) == bytes:
+            data = json_data.decode('utf8').replace("'", '"')
+            data = json.loads(json.dumps(data))
+            return data
+        if type(json_data) == str:
+            data = json.loads(json_data)
+            return data

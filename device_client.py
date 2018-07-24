@@ -20,12 +20,7 @@ print('[*] Waiting for Device serial numbers. To exit press CTRL+C')
 def callback(ch, method, properties, body):
 
     pzl = PZLutils()
-    if type(body) == bytes:
-        json_data = body.decode('utf8').replace("'", '"')
-        data = json.loads(json.dumps(json_data))
-    if type(body) == str:
-        data = json.loads(body)
-
+    data = pzl.read_json(body)
     url = 'http://127.0.0.1:5000/puzzle/api/v1/hwinfo'
     #print(pzl.retrieve_hwinfo(data=data, url=url))
     channel.basic_publish(exchange='',
