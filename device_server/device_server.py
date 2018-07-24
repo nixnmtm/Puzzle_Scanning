@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
-import pika, json
-import time
-from PZLutils import PZLutils
+import pika
+from device_client.PZLutils import PZLutils
 
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))

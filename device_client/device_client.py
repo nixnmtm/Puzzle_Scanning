@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import pika
-import json
-from PZLutils import PZLutils
+from device_client.PZLutils import PZLutils
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
 channel = connection.channel()
