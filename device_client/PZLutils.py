@@ -24,7 +24,6 @@ class PZLutils(object):
 
         apiResponse = requests.get(url, verify=True)
         if apiResponse.ok:
-            #hwinfo = json.loads(apiResponse.text)
             hwinfo = apiResponse.text
             return hwinfo
         else:
@@ -47,6 +46,9 @@ class PZLutils(object):
     #                 #raise ResourceWarning("Me ({}) not listed.".format(self._this_device_slno()))
 
     def read_json(self, json_data):
+
+        """Convert bytes datatype to str"""
+
         if type(json_data) == bytes:
             data = json_data.decode('ascii')
             data = json.loads(data)

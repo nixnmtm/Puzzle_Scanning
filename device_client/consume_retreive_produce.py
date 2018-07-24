@@ -20,9 +20,6 @@ def callback(ch, method, properties, body):
 
     pzl = PZLutils()
     data = pzl.read_json(body)
-
-    print(type(data))
-    #data = pzl.read_json(body)
     url = 'http://127.0.0.1:5000/puzzle/api/v1/hwinfo'
     for i in data:
         if i == "devices":

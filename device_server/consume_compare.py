@@ -21,3 +21,4 @@ channel.basic_qos(prefetch_count=1)
 channel.basic_consume(callback, queue='hwinfo_queue')
 channel.start_consuming()
 
+
