@@ -1,13 +1,10 @@
-# Retrieve hardware info based on device id
+# Retrieve hardware info based on device serial number
 
-1. Consume device id from main server (as of now rabbitmq_server_dummy.py)
-2. Check whether the local device is in the list (device_client.py, PZLUtils.py)
-3. Run retrieve HWInfo API (device_client.py, PZLUtils.py)
-4. Route it to queue, server side
-5. Compare Mongo DB data and HWInfo data 
-6. Insert if SUCCESS
-7. send log if FAIL 
-
+1. Consume device serial number from MES server (as of now rabbitmq_server_dummy.py)
+2. Locally, check whether the current device Sl.No in the list (device_client.py, PZLUtils.py)
+3. Run retrieve HWInfo API (device_client.py, PZLUtils.py).
+4. Publish it back to main server using the same connection through unique route key.(device_client.py, device_server.py, PZLUtils.py)
+5. Compare Mongo DB data and HWInfo data and POST the report and notification message.
 
 ### **Dependencies:**
 
