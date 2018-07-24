@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import pika
+import json
 from device_client.PZLutils import PZLutils
 
 
