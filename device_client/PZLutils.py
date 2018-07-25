@@ -15,7 +15,7 @@ class PZLutils(object):
 
         dev_list = ["{0:03}".format(i) for i in range(10)]
         pzl_devname = random.choice(dev_list)
-        print("Device Sl.No: {}".format(pzl_devname))
+        #print("Device Sl.No: {}".format(pzl_devname))
         return pzl_devname
 
     def retrieve_hwinfo(self, url):
@@ -29,22 +29,6 @@ class PZLutils(object):
             return hwinfo
         else:
             return apiResponse.raise_for_status()
-
-    # def check_device(self, data):
-    #
-    #     """If device serial number in query retrieve hardware information of the device"""
-    #
-    #     #data = json.loads(data)  # convert the json into python compatible
-    #     data = json.loads(data)
-    #     for i in data:
-    #         if i == "devices":
-    #             if self._this_device_slno() in data[i]:
-    #                 print("Device Sl.No Matched. \nHardware details retrieved and sent to main server.")
-    #                 return 1
-    #             # else:
-    #             #     pass
-    #                 #return "ERROR"
-    #                 #raise ResourceWarning("Me ({}) not listed.".format(self._this_device_slno()))
 
     def read_json(self, json_data):
         if type(json_data) == bytes:
