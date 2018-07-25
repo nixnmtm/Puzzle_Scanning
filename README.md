@@ -1,9 +1,19 @@
 # Retrieve hardware info based on device serial number
 
 1. Consume device serial number from MES server (as of now rabbitmq_server_dummy.py)
-2. Locally, check whether the current device Sl.No in the list (device_client.py, PZLUtils.py)
-3. Run retrieve HWInfo API (device_client.py, PZLUtils.py).
-4. Publish it back to main server using the same connection through unique route key.(device_client.py, device_server.py, PZLUtils.py)
+
+    ``` Fanout mechanism    - exchange = 'devSNo'
+                            - exchange_type = fanout
+                            - queue --> exlcusive = True
+             should be maintained in both Producer and Consumer ```
+            
+2. Locally, check whether the current device Sl.No in the list (consume_retreive_produce.py, PZLUtils.py)
+3. Run retrieve HWInfo API (consume_retreive_produce.py, PZLUtils.py).
+4. Publish it back to main server using the same connection through unique route key.(consume_retreive_produce.py, consume_compare.py, PZLUtils.py)
+
+       ``` Work Queue mechanism - queue_name = 'hwinfo_queue'
+                                - durable = True ```
+                            
 5. Compare Mongo DB data and HWInfo data and POST the report and notification message.
 
 ### **Dependencies:**
