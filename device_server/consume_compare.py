@@ -2,8 +2,10 @@
 
 import pika
 import json
+import logging
 from device_client.PZLutils import PZLutils
 
+logging.basicConfig(level=logging.INFO)
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
 channel = connection.channel()
