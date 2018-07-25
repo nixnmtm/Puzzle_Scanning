@@ -16,7 +16,7 @@ print(' [*] Waiting for hardware info of devices. To exit press CTRL+C')
 def callback(ch, method, properties, body):
     pzl = PZLutils()
     data = pzl.read_json(body)
-    print(" [x] Received from local device: \n{}".format(data))
+    print(" [x] Received from local devices: \n{}".format(data))
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
 channel.basic_qos(prefetch_count=1)
