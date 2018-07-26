@@ -26,66 +26,55 @@
 #### RabbitMQ Version: 3.7.7(Erlang 21.0)
 
 ### Hardware information Json format
+
+Accumulating each device dictionary in a list
+
 ```
-{
-    "1": {
-        "006": {
-            "cpuinfo": {
-                "architecture": "x86_64",
-                "corepersocket": "6",
-                "cpu": "12",
-                "threadpercore": "2"
-            },
-            "meminfo": {
-                "memavailable": "11.25 GB",
-                "memfree": "9.04 GB",
-                "memtotal": "23.47 GB"
-            },
-            "pciinfo": {
-                "0000:02:00.0": {
-                    "Description": "Ethernet Controller X710 for 10GbE SFP+",
-                    "Driver": "i40e",
-                    "Interface": "enp2s0f0",
-                    "macaddr": "00:18:7d:a4:cc:a3"
-                },
-                "0000:02:00.1": {
-                    "Description": "Ethernet Controller X710 for 10GbE SFP+",
-                    "Driver": "i40e",
-                    "Interface": "enp2s0f1",
-                    "macaddr": "00:18:7d:a4:cc:a4"
-                },
-                "0000:02:00.2": {
-                    "Description": "Ethernet Controller X710 for 10GbE SFP+",
-                    "Driver": "i40e",
-                    "Interface": "enp2s0f2",
-                    "macaddr": "00:18:7d:a4:cc:a5"
-                },
-                "0000:02:00.3": {
-                    "Description": "Ethernet Controller X710 for 10GbE SFP+",
-                    "Driver": "i40e",
-                    "Interface": "enp2s0f3",
-                    "macaddr": "00:18:7d:a4:cc:a6"
-                },
-                "0000:03:00.0": {
-                    "Description": "I211 Gigabit Network Connection",
-                    "Driver": "igb",
-                    "Interface": "enp3s0",
-                    "macaddr": "e0:18:7d:2e:ca:67"
-                },
-                "0000:04:00.0": {
-                    "Description": "I211 Gigabit Network Connection",
-                    "Driver": "igb",
-                    "Interface": "enp4s0",
-                    "macaddr": "e0:18:7d:2e:ca:68"
-                },
-                "0000:05:00.0": {
-                    "Description": "I211 Gigabit Network Connection",
-                    "Driver": "igb",
-                    "Interface": "enp5s0",
-                    "macaddr": "e0:18:7d:2e:ca:69"
-                }
-            }
-        }
+{ "scanid": "1",
+  "devslno": "007",
+  "cpuinfo": {
+    "architecture": "x86_64",
+    "corepersocket": "6",
+    "cpu": "12",
+    "threadpercore": "2"
+  },
+  "meminfo": {
+    "memavailable": "11.37 GB",
+    "memfree": "9.15 GB",
+    "memtotal": "23.47 GB"
+  },
+  "pciinfo": {
+    "0000:02:00.1": {
+      "description": "Ethernet Controller X710 for 10GbE SFP+",
+      "driver": "i40e",
+      "interface": "enp2s0f1",
+      "macaddr": "00:18:7d:a4:cc:a4"
+    },
+    "0000:02:00.2": {
+      "description": "Ethernet Controller X710 for 10GbE SFP+",
+      "driver": "i40e",
+      "interface": "enp2s0f2",
+      "macaddr": "00:18:7d:a4:cc:a5"
+    },
+    "0000:03:00.0": {
+      "description": "I211 Gigabit Network Connection",
+      "driver": "igb",
+      "interface": "enp3s0",
+      "macaddr": "e0:18:7d:2e:ca:67"
+    },
+    "0000:04:00.0": {
+      "description": "I211 Gigabit Network Connection",
+      "driver": "igb",
+      "interface": "enp4s0",
+      "macaddr": "e0:18:7d:2e:ca:68"
+    },
+    "0000:05:00.0": {
+      "description": "I211 Gigabit Network Connection",
+      "driver": "igb",
+      "interface": "enp5s0",
+      "macaddr": "e0:18:7d:2e:ca:69"
     }
+  }
 }
+
 ```
