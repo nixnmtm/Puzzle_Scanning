@@ -28,65 +28,64 @@
 ### Hardware information Json format
 ```
 {
-    "device_SlNo": {
-        "003": {
-            "CPUinfo": {
-                "Architecture": "x86_64",
-                "CPU(s)": "12",
-                "Core(s) per socket": "6",
-                "Thread(s) per core": "2"
+    "1": {
+        "006": {
+            "cpuinfo": {
+                "architecture": "x86_64",
+                "corepersocket": "6",
+                "cpu": "12",
+                "threadpercore": "2"
             },
-            "MEMinfo": {
-                "MemAvailable": "11.54 GB",
-                "MemFree": "9.38 GB",
-                "MemTotal": "23.47 GB"
+            "meminfo": {
+                "memavailable": "11.25 GB",
+                "memfree": "9.04 GB",
+                "memtotal": "23.47 GB"
             },
-            "PCIinfo": {
+            "pciinfo": {
                 "0000:02:00.0": {
                     "Description": "Ethernet Controller X710 for 10GbE SFP+",
                     "Driver": "i40e",
                     "Interface": "enp2s0f0",
-                    "MACaddr": "00:18:7d:a4:cc:a3"
+                    "macaddr": "00:18:7d:a4:cc:a3"
                 },
                 "0000:02:00.1": {
                     "Description": "Ethernet Controller X710 for 10GbE SFP+",
                     "Driver": "i40e",
                     "Interface": "enp2s0f1",
-                    "MACaddr": "00:18:7d:a4:cc:a4"
+                    "macaddr": "00:18:7d:a4:cc:a4"
                 },
-                "0000:06:00.0": {
+                "0000:02:00.2": {
+                    "Description": "Ethernet Controller X710 for 10GbE SFP+",
+                    "Driver": "i40e",
+                    "Interface": "enp2s0f2",
+                    "macaddr": "00:18:7d:a4:cc:a5"
+                },
+                "0000:02:00.3": {
+                    "Description": "Ethernet Controller X710 for 10GbE SFP+",
+                    "Driver": "i40e",
+                    "Interface": "enp2s0f3",
+                    "macaddr": "00:18:7d:a4:cc:a6"
+                },
+                "0000:03:00.0": {
                     "Description": "I211 Gigabit Network Connection",
                     "Driver": "igb",
-                    "Interface": "enp6s0",
-                    "MACaddr": "e0:18:7d:2e:ca:6a"
+                    "Interface": "enp3s0",
+                    "macaddr": "e0:18:7d:2e:ca:67"
                 },
-                "0000:07:00.0": {
+                "0000:04:00.0": {
                     "Description": "I211 Gigabit Network Connection",
                     "Driver": "igb",
-                    "Interface": "enp7s0",
-                    "MACaddr": "e0:18:7d:2e:cb:44"
+                    "Interface": "enp4s0",
+                    "macaddr": "e0:18:7d:2e:ca:68"
                 },
-                "0000:08:00.0": {
+                "0000:05:00.0": {
                     "Description": "I211 Gigabit Network Connection",
                     "Driver": "igb",
-                    "Interface": "enp8s0",
-                    "MACaddr": "e0:18:7d:2e:cb:44"
-                },
-                "0000:09:00.0": {
-                    "Description": "I211 Gigabit Network Connection",
-                    "Driver": "igb",
-                    "Interface": "enp9s0",
-                    "MACaddr": "e0:18:7d:2e:cb:45"
-                },
-                "0000:0a:00.0": {
-                    "Description": "I211 Gigabit Network Connection",
-                    "Driver": "igb",
-                    "Interface": "enp10s0",
-                    "MACaddr": "e0:18:7d:2e:cb:45"
+                    "Interface": "enp5s0",
+                    "macaddr": "e0:18:7d:2e:ca:69"
                 }
             }
         }
-    },
-    "scan_id": "1"
+    }
 }
 ```

@@ -11,9 +11,8 @@ def populate_data(data):
     get_dev_slno = pzl.this_device_slno()
     logging.info("Populating hardware datas from device ===> Sl.No: {}".format(get_dev_slno))
     if get_dev_slno in data["devices"]:
-        hw_info["scan_id"] = data["scan_id"]
-        hw_info["device_SlNo"] = {}
-        hw_info["device_SlNo"][get_dev_slno] = pzl.read_json(pzl.retrieve_hwinfo(url))
+        hw_info[data["scan_id"]] = {}
+        hw_info[data["scan_id"]][get_dev_slno] = pzl.read_json(pzl.retrieve_hwinfo(url))
     print(json.dumps(hw_info))
     return json.dumps(hw_info)
 
