@@ -2,17 +2,24 @@ import pika, json, logging
 from device_client.PZLutils import PZLutils
 
 
+
 pzl = PZLutils()
 #logging.basicConfig(filename='dev_consume.log', level=logging.INFO)
 logging.basicConfig(level=logging.INFO)
+
 def populate_data(data):
     hw_info = {}
     url = 'http://127.0.0.1:5000/puzzle/api/v1/hwinfo'
     get_dev_slno = pzl.this_device_slno()
     logging.info("Populating hardware datas from device ===> Sl.No: {}".format(get_dev_slno))
     if get_dev_slno in data["devices"]:
-        hw_info[data["scan_id"]] = {}
-        hw_info[data["scan_id"]][get_dev_slno] = pzl.read_json(pzl.retrieve_hwinfo(url))
+        """for nested follow this snippet
+        # hw_info[data["scan_id"]] = {}
+        # hw_info[data["scan_id"]][get_dev_slno] = pzl.read_json(pzl.retrieve_hwinfo(url))"""
+        # unnested
+        hw_info["scanid"] = data["scan_id"]
+        hw_info["devslno"] = get_dev_slno
+        hw_info.update(pzl.read_json(pzl.retrieve_hwinfo(url)))
     print(json.dumps(hw_info))
     return json.dumps(hw_info)
 
