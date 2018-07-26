@@ -13,7 +13,7 @@ def send_dev_SlNo():
     channel.exchange_declare(exchange='devSNo',
                              exchange_type='fanout')
     data["scan_id"] = str(send_dev_SlNo.counter)
-    data['devices'] = ["{0:03}".format(i) for i in range(5)]
+    data['devices'] = ["{0:03}".format(i) for i in range(8)]
     json_data = json.dumps(data)
     channel.basic_publish(exchange='devSNo',
                           routing_key='',
@@ -24,5 +24,5 @@ def send_dev_SlNo():
 
 send_dev_SlNo.counter = 0
 
-for i in range(5):
-    send_dev_SlNo()
+
+send_dev_SlNo()

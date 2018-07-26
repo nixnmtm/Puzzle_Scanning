@@ -21,11 +21,10 @@ def callback(ch, method, properties, body):
     pzl = PZLutils()
     data = pzl.read_json(body)
     if data:
-        logging.info("[*] Data consumed Successfully")
-    else:
-        logging.error(" [***] Error in Data format sent from Server")
+        logging.info("Consuming from MES server")
     hw_info = populate_data(data)
     ch.queue_declare(queue='hwinfo_queue', durable=True)
+    logging.info("Publishing to device server side")
     ch.basic_publish(exchange='',
                           routing_key='hwinfo_queue',
                           body=hw_info,
@@ -40,7 +39,6 @@ def consumeAndpublish(host='localhost', ex_name="devSNo", ex_type='fanout'):
     queue_name = result.method.queue
     channel.queue_bind(exchange=ex_name, queue=queue_name)
     logging.info('[*] Waiting for Device serial numbers. To exit press CTRL+C')
-    logging.info("[*] Consuming data from MES server .......")
     channel.basic_consume(callback, queue=queue_name, no_ack=True)
     channel.start_consuming()
 
