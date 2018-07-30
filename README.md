@@ -8,7 +8,7 @@
              should be maintained in both Producer and Consumer ```
             
 2. Locally, check whether the current device Sl.No in the list (consume_retreive_produce.py, PZLUtils.py)
-3. Run retrieve HWInfo API (consume_retreive_produce.py, PZLUtils.py).
+3. Run retrieve HWInfo API(http://40.74.91.221/Nixon/VNet_APIs/blob/master/HWInfo.py)
 4. Publish it back to main server using the same connection through unique route key.(consume_retreive_produce.py, consume_compare.py, PZLUtils.py)
 
        ``` Work Queue mechanism - queue_name = 'hwinfo_queue'
