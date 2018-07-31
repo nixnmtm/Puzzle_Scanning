@@ -12,9 +12,9 @@ class PZLutils(object):
 
         """Get device name from the device - This is a dummy"""
         """Getting a random name from a list to check"""
-        dev_list = ["{0:03}".format(i) for i in range(10)]
+        #dev_list = ["{0:03}".format(i) for i in range(10)]
+        dev_list = [i for i in range(1001, 1006)]
         pzl_devname = random.choice(dev_list)
-        #print("Device Sl.No: {}".format(pzl_devname))
         return pzl_devname
 
     def retrieve_hwinfo(self, url):
