@@ -2,7 +2,7 @@
 
 1. Consume device serial number from MES server (as of now rabbitmq_server_dummy.py)
 
-    ``` Fanout mechanism    - exchange = 'devSNo'
+    ``` Fanout mechanism    - exchange = 'devicescan'
                             - exchange_type = fanout
                             - queue --> exlcusive = True
              should be maintained in both Producer and Consumer ```
