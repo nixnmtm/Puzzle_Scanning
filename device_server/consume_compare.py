@@ -56,10 +56,12 @@ def callback(ch, method, properties, body):
                 data["macinfo"][k]["scanstatus"] = "FAIL"
     test.update(data)
     all_dev.append(data)
+    print(data)
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
-def start_connection(host='localhost', queue_name='hwinfo_queue'):
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+def start_connection(host='10.10.70.89', queue_name='hwinfo_queue', username="rmquser", password="123456"):
+    credentials = pika.PlainCredentials(username=username, password=password)
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=host, port=5672, credentials=credentials))
     channel = connection.channel()
     channel.queue_declare(queue=queue_name, durable=True)
     logging.info('[*] Waiting for client device information. To exit press CTRL+C')
@@ -72,12 +74,5 @@ def main():
 if __name__ == '__main__':
     main()
 
-
-# def dummy():
-#     print(all)
-
-# def get_numofdev(data):
-#     totdev = data["ndev"]
-#     return totdev
 
 

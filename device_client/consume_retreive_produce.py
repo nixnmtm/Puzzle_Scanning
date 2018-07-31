@@ -12,12 +12,7 @@ def populate_data(data):
     get_dev_slno = pzl.this_device_slno()
     if get_dev_slno in data["devices"]:
         logging.info("Populating hardware datas from device ===> Sl.No: {}".format(get_dev_slno))
-        #for nested follow this snippet
-        # hw_info[data["scan_id"]] = {}
-        # hw_info[data["scan_id"]][get_dev_slno] = pzl.read_json(pzl.retrieve_hwinfo(url))
-        # unnested
-        #hw_info["ndev"] = len(data["devices"])
-        hw_info["scanid"] = data["scan_id"]
+        hw_info["operationid"] = data["scan_id"]
         hw_info["serialno"] = get_dev_slno
         temp = pzl.read_json(pzl.retrieve_hwinfo(url))
         if "cpuinfo" in temp.keys():
@@ -55,8 +50,9 @@ def callback(ch, method, properties, body):
         logging.error("**Scanning Failed. " + str(e))
 
 
-def consumeAndpublish(host='localhost', ex_name="devicescan", ex_type='fanout'):
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host=host))
+def consumeAndpublish(host="10.10.70.89", ex_name="devicescan", ex_type='fanout', username="rmquser", password="123456"):
+    credentials = pika.PlainCredentials(username=username, password=password)
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=host, port=5672, credentials=credentials))
     channel = connection.channel()
     channel.exchange_declare(exchange=ex_name,
                              exchange_type=ex_type)
