@@ -23,6 +23,7 @@
 * flask 1.0.2
 * pika 0.11.0
 * requests 2.19.1
+* more_itertools 4.2.0
 
 #### RabbitMQ Version: 3.7.7(Erlang 21.0)
 
