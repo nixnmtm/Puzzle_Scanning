@@ -1,5 +1,7 @@
+#!/usr/bin/env python
 import pika, json, logging
-from device_client.PZLutils import PZLutils
+
+from device_client import PZLutils
 
 
 pzl = PZLutils()
