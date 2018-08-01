@@ -44,11 +44,38 @@ def read_json(json_data):
         data = json.loads(json_data)
         return data
 
+def accumulate_all(all_dev):
+    alldevresponse = {}
+    operationid = []
+    scaninfo = []
+    for num, devs in enumerate(all_dev):
+        info = {}
+        for k, v in devs.items():
+            macdetails = []
+            for n, (i, j) in enumerate(devs["macinfo"].items()):
+                temp = {}
+                temp["interface"] = i
+                temp["scanstatus"] = j["scanstatus"]
+                temp["macaddr"] = j["macaddr"]
+                macdetails.insert(n, temp)
+            if k == "sn":
+                info["sn"] = devs[k]
+                info["macinfo"] = macdetails
+        scaninfo.insert(num, info)
+
+    alldevresponse["operationid"] = all_dev[0]["operationid"]
+    alldevresponse["scaninfo"] = scaninfo
+    return(alldevresponse)
+
 def notify():
     global all_dev
     global devfound
     logging.info("Sending notification to the user")
-    print(all_dev)
+    print(accumulate_all(all_dev))
+    if len(accumulate_all(all_dev)["scaninfo"]) == len(devfound):
+        logging.info("Scanning Completed Successfully")
+    else:
+        logging.warn("Number of devices received and collected mismatch")
     print(devfound)
     logging.info("Resume consuming")
     all_dev = []
