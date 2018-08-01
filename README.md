@@ -1,20 +1,21 @@
 # Retrieve hardware info based on device serial number
 
-1. Consume device serial number from MES server (as of now rabbitmq_server_dummy.py)
+1. Start scanning when command received in all client devices. (as of now rabbitmq_server_dummy.py)
 
     ``` Fanout mechanism    - exchange = 'devicescan'
                             - exchange_type = fanout
                             - queue --> exlcusive = True
              should be maintained in both Producer and Consumer ```
             
-2. Locally, check whether the current device Sl.No in the list (consume_retreive_produce.py, PZLUtils.py)
-3. Run retrieve HWInfo API(http://40.74.91.221/Nixon/VNet_APIs/blob/master/HWInfo.py)
-4. Publish it back to main server using the same connection through unique route key.(consume_retreive_produce.py, consume_compare.py, PZLUtils.py)
+2. Locally, retrieve all device informations using HWInfo API.(http://40.74.91.221/Nixon/VNet_APIs/blob/master/HWInfo.py)
+3. Publish it back to main server using the same connection through unique route key.(device_scan.py, server_scan.py, PZLUtils.py)
 
        ``` Work Queue mechanism - queue_name = 'hwinfo_queue'
                                 - durable = True ```
                             
-5. Compare Mongo DB data and HWInfo data and POST the report and notification message.
+5. GET MES data from device_info API and compare with HWInfo data.
+6. POST notifications to notifications API.
+7. POST compared response/log to deviceScan API.
 
 ### **Dependencies:**
 
@@ -30,51 +31,50 @@
 Accumulating each device dictionary in a list
 
 ```
-{ "scanid": "1",
-  "devslno": "007",
-  "cpuinfo": {
-    "architecture": "x86_64",
-    "corepersocket": "6",
-    "cpu": "12",
-    "threadpercore": "2"
-  },
-  "meminfo": {
-    "memavailable": "11.37 GB",
-    "memfree": "9.15 GB",
-    "memtotal": "23.47 GB"
-  },
-  "pciinfo": {
-    "0000:02:00.1": {
-      "description": "Ethernet Controller X710 for 10GbE SFP+",
-      "driver": "i40e",
-      "interface": "enp2s0f1",
-      "macaddr": "00:18:7d:a4:cc:a4"
-    },
-    "0000:02:00.2": {
-      "description": "Ethernet Controller X710 for 10GbE SFP+",
-      "driver": "i40e",
-      "interface": "enp2s0f2",
-      "macaddr": "00:18:7d:a4:cc:a5"
-    },
-    "0000:03:00.0": {
-      "description": "I211 Gigabit Network Connection",
-      "driver": "igb",
-      "interface": "enp3s0",
-      "macaddr": "e0:18:7d:2e:ca:67"
-    },
-    "0000:04:00.0": {
-      "description": "I211 Gigabit Network Connection",
-      "driver": "igb",
-      "interface": "enp4s0",
-      "macaddr": "e0:18:7d:2e:ca:68"
-    },
-    "0000:05:00.0": {
-      "description": "I211 Gigabit Network Connection",
-      "driver": "igb",
-      "interface": "enp5s0",
-      "macaddr": "e0:18:7d:2e:ca:69"
-    }
-  }
+{
+    "operationid": 1,
+    "scaninfo": [
+        {
+            "macinfo": [
+                {
+                    "interface": "enp4s0",
+                    "macaddr": "e0:18:7d:2e:ca:68",
+                    "scanstatus": "1"
+                },
+                {
+                    "interface": "enp6s0",
+                    "macaddr": "e0:18:7d:2e:ca:6a",
+                    "scanstatus": "0"
+                },
+                {
+                    "interface": "enp5s0",
+                    "macaddr": "e0:18:7d:2e:ca:69",
+                    "scanstatus": "0"
+                }
+            ],
+            "sn": 1001
+        },
+        {
+            "macinfo": [
+                {
+                    "interface": "enp5s0",
+                    "macaddr": "e0:18:7d:2e:ca:69",
+                    "scanstatus": "0"
+                },
+                {
+                    "interface": "enp2s0f3",
+                    "macaddr": "00:18:7d:a4:cc:a6",
+                    "scanstatus": "0"
+                },
+                {
+                    "interface": "enp8s0",
+                    "macaddr": "e0:18:7d:2e:cb:44",
+                    "scanstatus": "0"
+                }
+            ],
+            "sn": 1003
+        }
+    ]
 }
 
 ```

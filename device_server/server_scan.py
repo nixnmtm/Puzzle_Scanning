@@ -71,7 +71,7 @@ def notify():
     global all_dev
     global devfound
     logging.info("Sending notification to the user")
-    print(accumulate_all(all_dev))
+    print(json.dumps(accumulate_all(all_dev), sort_keys=True, indent=4, separators=(',', ': ')))
     if len(accumulate_all(all_dev)["scaninfo"]) == len(devfound):
         logging.info("Scanning Completed Successfully")
     else:
