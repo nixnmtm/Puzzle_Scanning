@@ -56,7 +56,7 @@ def callback(ch, method, properties, body):
                 data["macinfo"][k]["scanstatus"] = "FAIL"
     test.update(data)
     all_dev.append(data)
-    print(data)
+    print(json.dumps(data, sort_keys=True, indent=4, separators=(',', ': ')))
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
 def start_connection(host='10.10.70.89', queue_name='hwinfo_queue', username="rmquser", password="123456"):
