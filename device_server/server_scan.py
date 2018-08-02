@@ -6,9 +6,24 @@ import more_itertools as mit
 logging.basicConfig(level=logging.INFO)
 all_dev = []
 devfound = []
+devsucess = []
 deviinfo_url = "http://10.10.70.89:3000/puzzle/api/v1/deviceinfo/getById"
+post_api = 0  # if (0: dont POST, 1: POST)
+
+def read_json(json_data):
+    """Convert bytes datatype to str"""
+
+    if type(json_data) == bytes:
+        data = json_data.decode('ascii')
+        data = json.loads(data)
+        return data
+    if type(json_data) == str:
+        data = json.loads(json_data)
+        return data
+
 
 def get_mesdevinfo(url, devid):
+    """Get MES device info from deviceinfo API"""
     if devid is str:
         pass
     else:
@@ -22,7 +37,7 @@ def get_mesdevinfo(url, devid):
         mesdevinfo = requests.request("GET", url, params=querystring, headers=headers)
 
     except Exception as e:
-        logging.error("Damn, error in accessing the MES device info url")
+        logging.error("Damn, error in accessing the url")
 
     try:
         mesdevinfo = json.loads(mesdevinfo.text)
@@ -33,16 +48,22 @@ def get_mesdevinfo(url, devid):
     except Exception as e:
         logging.error("No device info found")
 
-def read_json(json_data):
-    """Convert bytes datatype to str"""
+def compareMES(locdata, mesdata):
 
-    if type(json_data) == bytes:
-        data = json_data.decode('ascii')
-        data = json.loads(data)
-        return data
-    if type(json_data) == str:
-        data = json.loads(json_data)
-        return data
+    """Compare, double check and report scanstatus,
+    whether device and mac address are same as in MES data"""
+
+    for k, v in locdata["macinfo"].items():
+        for i in mesdata:
+            if k == i.get("interface"):
+            #if k == "enp3s0":
+                if v.get("macaddr") == i.get("macaddr"):
+                    locdata["macinfo"][k]["scanstatus"] = "1"
+                else:
+                    locdata["macinfo"][k]["scanstatus"] = "0"
+            else:
+                locdata["macinfo"][k]["scanstatus"] = "0"
+    return locdata
 
 def accumulate_all(all_dev):
     alldevresponse = {}
@@ -67,36 +88,76 @@ def accumulate_all(all_dev):
     alldevresponse["scaninfo"] = scaninfo
     return(alldevresponse)
 
-def notify():
+def notify(dev):
+
+    """Notify to notification API"""
+    if post_api == 1:
+        try:
+            notifyurl = "http://10.10.70.89:4000/notifications/devicescan"
+            headers = {'Content-Type': "application/json"}
+            note = {}
+            #send["status"] = logging.warning("Error_found_in_device_serial_no:_{}".format(dev))
+            note["sn"] = dev
+            note["status"] = "Errors found"
+            senddata = json.dumps(note)
+            logging.info("Sending notification of {}".format(dev))
+            requests.post(url=notifyurl, headers=headers, data=senddata)
+
+        except Exception as e:
+            logging.error("Damn, error in posting")
+
+def log_deviceinfo(info):
+
+    """Post compared data with status to device info API"""
+    if post_api == 1:
+        try:
+            url = "http://10.10.70.89:3000/puzzle/api/v1/log/deviceScan"
+            headers = {'Content-Type': "application/json"}
+            senddata = json.dumps(info)
+            print(senddata)
+            # print("Final Data:\n{}".format(json.dumps(finaldict, sort_keys=True, indent=4, separators=(',', ': '))))
+            logging.info("Posting device info")
+            requests.post(url=url, headers=headers, data=senddata)
+
+        except Exception as e:
+            logging.error("Damn, error in posting device info")
+
+
+def checkNupdate(devfound, updatedict):
+    """Check status and update result for each device """
+    if updatedict["scaninfo"]:
+        res = updatedict["scaninfo"].copy()
+        for i in devfound:
+            index = list(mit.locate(res, pred=lambda d: d["sn"] == i))
+            devdict = res[index[0]]["macinfo"]
+            if not any(a["scanstatus"] == '0' for a in devdict):  # if value in the list of dict
+                updatedict["scaninfo"][index[0]]["result"] = '1'  # if not any fail add result success
+                devsucess.append(i)
+            else:
+                updatedict["scaninfo"][index[0]]["result"] = '0'
+                notify(i)
+    return updatedict
+
+def scanningReal():
+
+    """ ** Accumulate all device info with compared data
+        ** Check mac status and update device scan result
+        ** Notify
+    """
     global all_dev
     global devfound
-    logging.info("Sending notification to the user")
-    print(json.dumps(accumulate_all(all_dev), sort_keys=True, indent=4, separators=(',', ': ')))
     if len(accumulate_all(all_dev)["scaninfo"]) == len(devfound):
-        logging.info("Scanning Completed Successfully")
+        logging.info("Number of devices received and collected match")
     else:
         logging.warn("Number of devices received and collected mismatch")
-    print(devfound)
+    alldevinfo = accumulate_all(all_dev)
+    finaldict = checkNupdate(devfound, alldevinfo)
+    log_deviceinfo(finaldict)
+    logging.info("Devices found:\n{}".format(devfound))
+    logging.info("Devices passed scanning:\n{}".format(devsucess))
     logging.info("Resume consuming")
     all_dev = []
     devfound = []
-
-def double_check(locdata, mesdata):
-
-    """double check and report scanstatus,
-    whether device and mac address are same as in MES data"""
-
-    for k, v in locdata["macinfo"].items():
-        for i in mesdata:
-            if k == i.get("interface"):
-            #if k == "enp3s0":
-                if v.get("macaddr") == i.get("macaddr"):
-                    locdata["macinfo"][k]["scanstatus"] = "1"
-                else:
-                    locdata["macinfo"][k]["scanstatus"] = "0"
-            else:
-                locdata["macinfo"][k]["scanstatus"] = "0"
-    return locdata
 
 timer_id=None
 def callback(ch, method, properties, body):
@@ -114,15 +175,20 @@ def callback(ch, method, properties, body):
     devfound.append(local_devid) # collect the devices replied
     # mesinfo comparision
     mesmacinfo = get_mesdevinfo(url=deviinfo_url, devid=local_devid)
-    scanned = double_check(data, mesmacinfo)
-    timer_id = ch.connection.add_timeout(10, notify)  # timeout, send received details and resume consuming
+    scanned = compareMES(data, mesmacinfo)
+    timer_id = ch.connection.add_timeout(10, scanningReal)  # timeout, send received details and resume consuming
     all_dev.append(scanned)
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
 
 def run(host, queue_name, username, password, port):
+    """Establish connection and run"""
     credentials = pika.PlainCredentials(username=username, password=password)
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host=host, port=port, credentials=credentials))
+    try:
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=host, port=port, credentials=credentials))
+    except Exception as e:
+        logging.error("Connection to server not established")
+
     channel = connection.channel()
     channel.queue_declare(queue=queue_name, durable=True)
     logging.info('[*] Waiting for client device information. To exit press CTRL+C')
