@@ -16,6 +16,7 @@
 5. GET MES data from device_info API and compare with HWInfo data.
 6. POST notifications to notifications API.
 7. POST compared response/log to deviceScan API.
+8. Check if all macs passed the scan, then result is "Pass" and send to Pair API.
 
 ### **Dependencies:**
 
@@ -28,8 +29,8 @@
 #### RabbitMQ Version: 3.7.7(Erlang 21.0)
 
 ### Hardware information Json format
-
-Accumulating each device dictionary in a list
+1. "scanstatus" : (0:Fail, 1: Pass)
+2. "result": (0:Fail, 1: Pass) # if all macs passed the scan, then result is "Pass" and send to Pair API
 
 ```
 {
@@ -53,7 +54,8 @@ Accumulating each device dictionary in a list
                     "scanstatus": "0"
                 }
             ],
-            "sn": 1001
+            "sn": 1001,
+            "result": "0"
         },
         {
             "macinfo": [
@@ -73,7 +75,8 @@ Accumulating each device dictionary in a list
                     "scanstatus": "0"
                 }
             ],
-            "sn": 1003
+            "sn": 1003,
+            "result": "0"
         }
     ]
 }
