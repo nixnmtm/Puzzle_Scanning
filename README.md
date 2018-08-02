@@ -32,6 +32,9 @@
 1. "scanstatus" : (0:Fail, 1: Pass)
 2. "result": (0:Fail, 1: Pass) # if all macs passed the scan, then result is "Pass" and send to Pair API
 
+
+Example:
+
 ```
 {
     "operationid": 1,
@@ -62,21 +65,21 @@
                 {
                     "interface": "enp5s0",
                     "macaddr": "e0:18:7d:2e:ca:69",
-                    "scanstatus": "0"
+                    "scanstatus": "1"
                 },
                 {
                     "interface": "enp2s0f3",
                     "macaddr": "00:18:7d:a4:cc:a6",
-                    "scanstatus": "0"
+                    "scanstatus": "1"
                 },
                 {
                     "interface": "enp8s0",
                     "macaddr": "e0:18:7d:2e:cb:44",
-                    "scanstatus": "0"
+                    "scanstatus": "1"
                 }
             ],
             "sn": 1003,
-            "result": "0"
+            "result": "1"
         }
     ]
 }
