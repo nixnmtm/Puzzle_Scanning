@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import pika, json, logging
 
-from device_client import PZLutils
+from device_client.PZLutils import PZLutils
 
 
 pzl = PZLutils()
@@ -27,7 +27,6 @@ def populate_data(data):
     return hw_info
 
 def callback(ch, method, properties, body):
-    pzl = PZLutils()
     data = pzl.read_json(body)
     try:
         if data["action"] == 1: # configured with assumption that only start action is available
