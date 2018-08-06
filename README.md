@@ -1,4 +1,4 @@
-# Retrieve hardware info based on device serial number
+# Scan BurnIn devices
 
 1. Start scanning when command received in all client devices. (as of now rabbitmq_server_dummy.py)
 
@@ -8,7 +8,7 @@
              should be maintained in both Producer and Consumer ```
             
 2. Locally, retrieve all device informations using HWInfo API.(http://40.74.91.221/Nixon/VNet_APIs/blob/master/HWInfo.py)
-3. Publish it back to main server using the same connection through unique route key.(device_scan.py, server_scan.py, PZLUtils.py)
+3. Publish it back to edge server using the same connection through unique route key.(device_scan.py, server_scan.py, PZLUtils.py)
 
        ``` Work Queue mechanism - queue_name = 'hwinfo_queue'
                                 - durable = True ```
