@@ -1,14 +1,18 @@
 #!/usr/bin/env python
 
-import pika, json, logging, requests
+import pika
+import json
+import logging
+import requests
 import more_itertools as mit
+import sys
 
 logging.basicConfig(level=logging.INFO)
 all_dev = []
 devfound = []
 devsucess = []
 deviinfo_url = "http://10.10.70.89:3000/puzzle/api/v1/deviceinfo/getById"
-post_api = 0  # if (0: dont POST, 1: POST)
+post_api = 1  # if (0: dont POST, 1: POST)
 
 def read_json(json_data):
     """Convert bytes datatype to str"""
@@ -216,11 +220,12 @@ def run(host, queue_name, username, password, port):
     channel.start_consuming()
 
 if __name__ == '__main__':
-    host = '10.10.70.89'
+    
+    host = str(sys.argv[1])
     queue_name = 'hwinfo_queue'
     username = "rmquser"
     password = "123456"
-    port = 5672
+    port = int(sys.argv[2])
     run(host, queue_name, username, password, port)
 
 
