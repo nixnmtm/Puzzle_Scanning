@@ -106,7 +106,7 @@ def notify(dev):
         except Exception as e:
             logging.error("Damn, error in posting")
 
-def log_deviceinfo(info):
+def postlog_deviceinfo(info):
 
     """Post compared data with status to device info API"""
     if post_api == 1:
@@ -122,6 +122,24 @@ def log_deviceinfo(info):
         except Exception as e:
             logging.error("Damn, error in posting device info")
 
+def post2pair(devs, operationid):
+
+    """Post the devices that has scanned successfull to Pair API"""
+
+    pairdevs = {}
+    pairdevs["operationId"] = operationid
+    pairdevs["snArray"] = devs
+
+    try:
+        url = "http://40.74.91.221/puzzle/edge-server-factory-api/wikis/Run-Pair-API"
+        headers = {'Content-Type': "application/json"}
+        senddata = json.dumps(pairdevs)
+        print(senddata)
+        logging.info("Posting successful devices to pair")
+        requests.post(url=url, headers=headers, data=senddata)
+
+    except Exception as e:
+        logging.error("Damn, error in posting devices to pair")
 
 def checkNupdate(devfound, updatedict):
     """Check status and update result for each device """
@@ -152,9 +170,10 @@ def scanningReal():
         logging.warn("Number of devices received and collected mismatch")
     alldevinfo = accumulate_all(all_dev)
     finaldict = checkNupdate(devfound, alldevinfo)
-    log_deviceinfo(finaldict)
+    postlog_deviceinfo(finaldict)
+    post2pair(devsucess, finaldict["operationid"])
     logging.info("Devices found:\n{}".format(devfound))
-    logging.info("Devices passed scanning:\n{}".format(devsucess))
+    logging.info("Devices passed scanning and sent to pairing:\n{}".format(devsucess))
     logging.info("Resume consuming")
     all_dev = []
     devfound = []
