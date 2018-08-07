@@ -62,21 +62,21 @@ def run(host, ex_name, ex_type, username, password, port):
 
 
 if __name__ == '__main__':
-    # mqhost = str(sys.argv[1])
-    # mqport = int(sys.argv[2])
-    # mqusername = str(sys.argv[3])
-    # mqpassword = str(sys.argv[4])
-    # apihost = str(sys.argv[5])
-    # apiport = int(sys.argv[6])
-    mqhost = "10.10.70.89"
-    mqport = 5672
-    mqusername = "rmquser"
-    mqpassword = "123456"
-    apihost = '127.0.0.1'
-    apiport = 5000
+    mqhost = str(sys.argv[1])
+    mqport = int(sys.argv[2])
+    mqusername = str(sys.argv[3])
+    mqpassword = str(sys.argv[4])
+    apihost = str(sys.argv[5])
+    apiport = int(sys.argv[6])
     ex_name = "devicescan"
     ex_type = 'fanout'
 
+    # mqhost = "10.10.70.89"
+    # mqport = 5672
+    # mqusername = "rmquser"
+    # mqpassword = "123456"
+    # apihost = '127.0.0.1'
+    # apiport = 5000
 
     url = 'http://'+ apihost +':'+ str(apiport) +'/puzzle/api/v1/hwinfo'
     run(mqhost, ex_name, ex_type, mqusername, mqpassword, mqport)
