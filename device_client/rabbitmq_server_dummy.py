@@ -9,7 +9,7 @@ def scan():
     connection = pika.BlockingConnection(pika.ConnectionParameters(host="10.10.70.89", port=5672, credentials=credentials))
     channel = connection.channel()
     channel.exchange_declare(exchange='devicescan', exchange_type='fanout')
-    data["operationid"] = 1
+    data["operationId"] = 1
     data["action"] = 1
     json_data = json.dumps(data)
     channel.basic_publish(exchange='devicescan',
