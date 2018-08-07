@@ -1,0 +1,8 @@
+[Unit]
+Description=SScanning
+After=network.target
+[Service]
+Environment="IP_PORT=%I"
+ExecStart=/usr/bin/python3 /home/test/PycharmProjects/HWinfoPuzzle/device_server/server_scan.py $IP_PORT
+[Install]
+WantedBy=multi-user.target
