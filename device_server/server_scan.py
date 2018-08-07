@@ -257,6 +257,7 @@ if __name__ == '__main__':
     mqpassword = str(sys.argv[4])
     apihost = str(sys.argv[5])
     apiport = int(sys.argv[6])
+    notifyport = int(sys.argv[7])
 
     # queue_name = 'hwinfo_queue'
     # mqhost = "10.10.70.89"
@@ -265,11 +266,12 @@ if __name__ == '__main__':
     # mqpassword = "123456"
     # apihost = "10.10.70.89"
     # apiport = 3000
+    # notifyport = 4000
 
     devinfo_url = "http://" + apihost + ":"+ str(apiport) +"/puzzle/api/v1/deviceInfo/getById"
     pair_url = "http://"+ apihost +":"+ str(apiport) +"/puzzle/api/v1/operations/pair"
     log_url = "http://"+ apihost +":"+ str(apiport) +"/puzzle/api/v1/log/deviceScan"
-    notifyurl = "http://10.10.70.89:4000/notifications/devicescan"
+    notifyurl = "http://"+ apihost +":"+ str(notifyport)+"/notifications/devicescan"
 
     run(mqhost, queue_name, mqusername, mqpassword, mqport)
 
