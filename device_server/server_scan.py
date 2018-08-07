@@ -258,8 +258,8 @@ if __name__ == '__main__':
     apihost = str(sys.argv[5])
     apiport = int(sys.argv[6])
     notifyport = int(sys.argv[7])
+    queue_name = 'hwinfo_queue'
 
-    # queue_name = 'hwinfo_queue'
     # mqhost = "10.10.70.89"
     # mqport = 5672
     # mqusername = "rmquser"
