@@ -26,6 +26,9 @@
                 {
                     "interface": "enp9s0",
                     "macaddr": "e0:18:7d:2e:cb:45"  
+                },
+                {
+                    "interface": "enp10s0",
+                    "macaddr": "e0:18:7d:2e:cb:45"
                 }
-                
                 ]
