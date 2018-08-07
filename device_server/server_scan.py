@@ -271,7 +271,7 @@ if __name__ == '__main__':
     devinfo_url = "http://" + apihost + ":"+ str(apiport) +"/puzzle/api/v1/deviceInfo/getById"
     pair_url = "http://"+ apihost +":"+ str(apiport) +"/puzzle/api/v1/operations/pair"
     log_url = "http://"+ apihost +":"+ str(apiport) +"/puzzle/api/v1/log/deviceScan"
-    notifyurl = "http://"+ apihost +":"+ str(notifyport)+"/notifications/devicescan"
+    notifyurl = "http://"+ apihost +":"+ str(notifyport) +"/notifications/devicescan"
 
     run(mqhost, queue_name, mqusername, mqpassword, mqport)
 

@@ -1,8 +1,8 @@
 [Unit]
-Description=SScanning
+Description=DScanning
 After=network.target
 [Service]
 Environment="IP_PORT=%I"
-ExecStart=/usr/bin/python3 /home/test/PycharmProjects/HWinfoPuzzle/device_client/device_scan.py $IP_PORT
+ExecStart=/usr/bin/python3 /home/test/DScanningClient/device_client/device_scan.py $IP_PORT
 [Install]
 WantedBy=multi-user.target

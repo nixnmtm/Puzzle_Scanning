@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
 import sys
-import pika, json, logging
-from device_client.PZLutils import PZLutils
-sys.path.append("../")
-
+import pika
+import json
+import logging
+#from device_client.PZLutils import PZLutils
+from PZLutils import PZLutils
 pzl = PZLutils()
 #logging.basicConfig(filename='dev_consume.log', level=logging.INFO, filemode='w')
 logging.basicConfig(level=logging.INFO)
