@@ -38,6 +38,8 @@
 3. STATUS : ```systemctl status DScanning@"10.10.70.89 5672 rmquser 123456"```
 4. STOP   : ```systemctl status DScanning@"10.10.70.89 5672 rmquser 123456"```
 
+### SSCanning Server as Service:
+
 
 Example:
 
