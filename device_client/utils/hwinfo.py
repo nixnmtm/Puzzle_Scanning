@@ -1,5 +1,5 @@
 import json
-from device_client.utils.PZLutils import PZLutils
+from device_client.utils.pzlutils import PZLutils
 
 pzl = PZLutils()
 info = {}
