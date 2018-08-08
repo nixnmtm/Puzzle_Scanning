@@ -32,6 +32,12 @@
 1. "scanstatus" : (0:Fail, 1: Pass)
 2. "result": (0:Fail, 1: Pass) # if all macs passed the scan, then result is "Pass" and send to Pair API
 
+### DScanning Client as Service:
+1. Run setupDScanning.sh
+2. START  : ```systemctl start DScanning@"10.10.70.89 5672 rmquser 123456"```
+3. STATUS : ```systemctl status DScanning@"10.10.70.89 5672 rmquser 123456"```
+4. STOP   : ```systemctl status DScanning@"10.10.70.89 5672 rmquser 123456"```
+
 
 Example:
 

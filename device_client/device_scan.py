@@ -4,7 +4,8 @@ import sys
 import pika
 import json
 import logging
-from device_client.utils import pzlutils, hwinfo
+#from device_client.utils import pzlutils, hwinfo
+from utils import pzlutils, hwinfo
 
 pzl = pzlutils.PZLutils()
 #logging.basicConfig(filename='dev_consume.log', level=logging.INFO, filemode='w')
