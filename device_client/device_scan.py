@@ -16,12 +16,7 @@ def populate_data(data):
     logging.info("Populating hardware datas from device ===> Sl.No: {}".format(get_dev_slno))
     hw_info["operationId"] = data["operationId"]
     hw_info["sn"] = get_dev_slno
-    #temp = pzl.read_json(pzl.retrieve_hwinfo(url))
     temp = hwinfo.pci_info()
-    # if "cpuinfo" in temp.keys():
-    #     temp.pop("cpuinfo")
-    # if "meminfo" in temp.keys():
-    #     temp.pop("meminfo")
     hw_info["macinfo"] = {}
     for k in temp["pciinfo"].keys():
         hw_info["macinfo"][temp["pciinfo"][k]["interface"]] = {}
@@ -64,21 +59,16 @@ def run(host, ex_name, ex_type, username, password, port):
 
 
 if __name__ == '__main__':
-    mqhost = str(sys.argv[1])
-    mqport = int(sys.argv[2])
-    mqusername = str(sys.argv[3])
-    mqpassword = str(sys.argv[4])
-    apihost = str(sys.argv[5])
-    apiport = int(sys.argv[6])
+    # mqhost = str(sys.argv[1])
+    # mqport = int(sys.argv[2])
+    # mqusername = str(sys.argv[3])
+    # mqpassword = str(sys.argv[4])
     ex_name = "devicescan"
     ex_type = 'fanout'
 
-    # mqhost = "10.10.70.89"
-    # mqport = 5672
-    # mqusername = "rmquser"
-    # mqpassword = "123456"
-    # apihost = '127.0.0.1'
-    # apiport = 5000
+    mqhost = "10.10.70.89"
+    mqport = 5672
+    mqusername = "rmquser"
+    mqpassword = "123456"
 
-    url = 'http://'+ apihost +':'+ str(apiport) +'/puzzle/api/v1/hwinfo'
     run(mqhost, ex_name, ex_type, mqusername, mqpassword, mqport)
