@@ -4,9 +4,9 @@ import sys
 import pika
 import json
 import logging
-#from device_client.PZLutils import PZLutils
-from PZLutils import PZLutils
-pzl = PZLutils()
+from device_client.utils import PZLutils, HWInfo
+
+pzl = PZLutils.PZLutils()
 #logging.basicConfig(filename='dev_consume.log', level=logging.INFO, filemode='w')
 logging.basicConfig(level=logging.INFO)
 
@@ -16,11 +16,12 @@ def populate_data(data):
     logging.info("Populating hardware datas from device ===> Sl.No: {}".format(get_dev_slno))
     hw_info["operationId"] = data["operationId"]
     hw_info["sn"] = get_dev_slno
-    temp = pzl.read_json(pzl.retrieve_hwinfo(url))
-    if "cpuinfo" in temp.keys():
-        temp.pop("cpuinfo")
-    if "meminfo" in temp.keys():
-        temp.pop("meminfo")
+    #temp = pzl.read_json(pzl.retrieve_hwinfo(url))
+    temp = HWInfo.pci_info()
+    # if "cpuinfo" in temp.keys():
+    #     temp.pop("cpuinfo")
+    # if "meminfo" in temp.keys():
+    #     temp.pop("meminfo")
     hw_info["macinfo"] = {}
     for k in temp["pciinfo"].keys():
         hw_info["macinfo"][temp["pciinfo"][k]["interface"]] = {}
