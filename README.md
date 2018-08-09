@@ -1,5 +1,7 @@
 # Scan BurnIn devices
 
+## Device Side:
+
 1. Start scanning when command received in all client devices. (as of now rabbitmq_server_dummy.py)
 
     ``` Fanout mechanism    - exchange = 'devicescan'
@@ -7,16 +9,18 @@
                             - queue --> exlcusive = True
              should be maintained in both Producer and Consumer ```
             
-2. Locally, retrieve all device informations using HWInfo API.(http://40.74.91.221/Nixon/VNet_APIs/blob/master/HWInfo.py)
-3. Publish it back to edge server using the same connection through unique route key.(device_scan.py, server_scan.py, PZLUtils.py)
+2. Locally, retrieve the pci information from hwinfo.py.
+3. Publish it back to edge server using the same connection through unique route key.
 
        ``` Work Queue mechanism - queue_name = 'hwinfo_queue'
                                 - durable = True ```
-                            
-5. GET MES data from device_info API and compare with HWInfo data.
-6. POST notifications to notifications API.
-7. POST compared response/log to deviceScan API.
-8. Check if all macs passed the scan, then result is "Pass" and send to Pair API.
+
+# Server Side:
+
+5. GET MES data from device_info API and compare with local pci data.
+6. POST compared response/log to deviceScan API.
+7. If any internal error or complete success, POST it to notifications API.
+8. Check if all macs passed the scan, then the device result is "Pass" and send to Pair API.
 
 ### **Dependencies:**
 
@@ -28,10 +32,6 @@
 
 #### RabbitMQ Version: 3.7.7(Erlang 21.0)
 
-### Hardware information Json format
-1. "scanstatus" : (0:Fail, 1: Pass)
-2. "result": (0:Fail, 1: Pass) # if all macs passed the scan, then result is "Pass" and send to Pair API
-
 ### DScanning Client as Service:
 1. Run setupDScanning.sh
 2. START  : ```systemctl start DScanning@"10.10.70.89 5672 rmquser 123456"```
@@ -39,7 +39,16 @@
 4. STOP   : ```systemctl status DScanning@"10.10.70.89 5672 rmquser 123456"```
 
 ### SSCanning Server as Service:
+1. Run setupSScanning.sh
+2. START  : ```systemctl status SScanning@"10.10.70.89 5672 rmquser 123456 10.10.70.89 3000 4000"```
+3. STATUS : ```systemctl status SScanning@"10.10.70.89 5672 rmquser 123456 10.10.70.89 3000 4000"```
+4. STOP   : ```systemctl status SScanning@"10.10.70.89 5672 rmquser 123456 10.10.70.89 3000 4000"```
 
+
+
+### Hardware information Json format
+1. "scanstatus" : (0:Fail, 1: Pass) # for each MAC in a device
+2. "result": (0:Fail, 1: Pass) # if all macs passed the scan, then result is "Pass" and send to Pair API
 
 Example:
 
