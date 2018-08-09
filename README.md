@@ -32,20 +32,6 @@
 
 #### RabbitMQ Version: 3.7.7(Erlang 21.0)
 
-### DScanning Client as Service:
-1. Run setupDScanning.sh
-2. START  : ```systemctl start DScanning@"10.10.70.89 5672 rmquser 123456"```
-3. STATUS : ```systemctl status DScanning@"10.10.70.89 5672 rmquser 123456"```
-4. STOP   : ```systemctl status DScanning@"10.10.70.89 5672 rmquser 123456"```
-
-### SSCanning Server as Service:
-1. Run setupSScanning.sh
-2. START  : ```systemctl status SScanning@"10.10.70.89 5672 rmquser 123456 10.10.70.89 3000 4000"```
-3. STATUS : ```systemctl status SScanning@"10.10.70.89 5672 rmquser 123456 10.10.70.89 3000 4000"```
-4. STOP   : ```systemctl status SScanning@"10.10.70.89 5672 rmquser 123456 10.10.70.89 3000 4000"```
-
-
-
 ### Hardware information Json format
 1. "scanstatus" : (0:Fail, 1: Pass) # for each MAC in a device
 2. "result": (0:Fail, 1: Pass) # if all macs passed the scan, then result is "Pass" and send to Pair API
