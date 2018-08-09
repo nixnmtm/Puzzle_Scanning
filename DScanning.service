@@ -1,0 +1,7 @@
+[Unit]
+Description=DScanning
+After=network.target
+[Service]
+ExecStart=/usr/bin/python3 /home/test/DScanningClient/device_client/device_scan.py
+[Install]
+WantedBy=multi-user.target
