@@ -5,8 +5,8 @@ import pika
 import json
 import logging
 import requests
-from device_client.utils import pzlutils, hwinfo
-#from utils import pzlutils, hwinfo
+#from device_client.utils import pzlutils, hwinfo
+from utils import pzlutils, hwinfo
 
 pzl = pzlutils.PZLutils()
 #logging.basicConfig(filename='dev_consume.log', level=logging.INFO, filemode='w')
@@ -37,6 +37,7 @@ def callback(ch, method, properties, body):
             ch.queue_declare(queue='hwinfo_queue', durable=True)
             if not hw_info: # if dictionary is empty
                 pass
+                logging.warning("No hw_info fetched from local device")
             else: # publishing to server from client only if the device is present
 
                 logging.info("Publishing to device server side")
