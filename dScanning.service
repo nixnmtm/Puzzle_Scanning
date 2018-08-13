@@ -1,6 +1,6 @@
 [Unit]
 Description=dScanning
-After=network.target
+After=network.target deviceAgent.service
 [Service]
 ExecStart=/usr/bin/python3 /home/test/dScanningClient/device_client/device_scan.py
 [Install]
