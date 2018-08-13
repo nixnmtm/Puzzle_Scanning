@@ -1,5 +1,5 @@
 [Unit]
-Description=DScanning
+Description=dScanning
 After=network.target
 [Service]
 ExecStart=/usr/bin/python3 /home/test/DScanningClient/device_client/device_scan.py
