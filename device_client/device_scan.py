@@ -60,67 +60,67 @@ def run(host, ex_name, ex_type, username, password, port):
     channel.start_consuming()
 
 
-if __name__ == '__main__':
+def calldeviceInfoApi(data):
+    url = 'http://{}:{}/deviceInfo'.format("localhost", 8882)
+    headers = {'Content-type': 'application/json'}
+    r = requests.post(url, data, headers=headers)
+    print(r.text)
+    print('Response Code: ', r.status_code)
+    retData = {}
+    if r.status_code == 200:
+        retData["result"] = 1
+        retData["data"] = json.loads(r.text)
+    else:
+        retData["result"] = 2
+    return retData
 
-    def callapi(data):
-        url = 'http://{}:{}/deviceInfo'.format("localhost", 8882)
-        headers = {'Content-type': 'application/json'}
-        r = requests.post(url, data, headers=headers)
-        print('Response Code: ', r.status_code)
-        retData = {}
-        if r.status_code == 200:
-            retData["result"] = 1
-            retData["data"] = json.loads(r.text)
-        else:
-            retData["result"] = 2
-        return retData
 
-
-    def myInput():
-        retData = {}
-        inputdata = {
-            "config": {
-                "name": [1]
-            },
-            "device": {
-                "name": [0]
-            }
+def myInput():
+    retData = {}
+    inputdata = {
+        "config": {
+            "name": [1] # 1 is for RabbitMQ, refer http://40.74.91.221/puzzle/device-all-factory/tree/master/deviceAgent
+        },
+        "device": {
+            "name": [0]
         }
-        tmp = json.dumps(inputdata)
-        tmpapi = callapi(tmp)
-        if tmpapi["result"] == 1: # PASS:
-            rabbitMQ = {}
-            sn = None
-            flag = 0
-            apidata = tmpapi["data"]
-            tmp = apidata["config"]
-            for loop in tmp:
-                data = loop["data"]
-                if loop["name"] == 1:
-                    if isinstance(data, dict):
-                        flag = flag + 1
-                        rabbitMQ["username"] = data["user"]
-                        rabbitMQ["password"] = data["password"]
-                        rabbitMQ["host"] = data["ip"]
-                        rabbitMQ["port"] = data["port"]
-            tmp = apidata["device"]
-            for loop in tmp:
-                data = loop["data"]
-                if loop["name"] == 0:
-                    if len(data) > 0:
-                        flag = flag + 1
-                        sn = data
-            if flag == 2:
-                retData["result"] = 1 # PASS
-                retData["rabbitMQ"] = rabbitMQ
-                retData["sn"] = sn
-            else:
-                retData["result"] = 2
-            print("myInput retData {}".format(data))
+    }
+    tmp = json.dumps(inputdata)
+    tmpapi = calldeviceInfoApi(tmp)
+    if tmpapi["result"] == 1: # PASS:
+        rabbitMQ = {}
+        sn = None
+        flag = 0
+        apidata = tmpapi["data"]
+        tmp = apidata["config"]
+        for loop in tmp:
+            data = loop["data"]
+            if loop["name"] == 1:
+                if isinstance(data, dict):
+                    flag = flag + 1
+                    rabbitMQ["username"] = data["user"]
+                    rabbitMQ["password"] = data["password"]
+                    rabbitMQ["host"] = data["ip"]
+                    rabbitMQ["port"] = data["port"]
+        tmp = apidata["device"]
+        for loop in tmp:
+            data = loop["data"]
+            if loop["name"] == 0:
+                if len(data) > 0:
+                    flag = flag + 1
+                    sn = data
+        if flag == 2:
+            retData["result"] = 1 # PASS
+            retData["rabbitMQ"] = rabbitMQ
+            retData["sn"] = sn
         else:
             retData["result"] = 2
-        return retData
+        print("myInput retData {}".format(data))
+    else:
+        retData["result"] = 2
+    return retData
 
+if __name__ == '__main__':
 
     myInputData = myInput()
     if myInputData["result"] == 1:
@@ -128,6 +128,11 @@ if __name__ == '__main__':
         sn = myInputData["sn"]
         print(mqdata)
         print(sn)
+
+    # mqhost = '10.10.70.89'
+    # mqport = 5672
+    # mqusername = "rmquser"
+    # mqpassword = "123456"
 
     # mqhost = str(sys.argv[1])
     # mqport = int(sys.argv[2])
