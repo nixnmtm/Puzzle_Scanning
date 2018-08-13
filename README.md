@@ -61,7 +61,7 @@ Example:
                     "scanstatus": "0"
                 }
             ],
-            "sn": 1001,
+            "sn": Q186I15901,
             "result": "0"
         },
         {
@@ -82,7 +82,7 @@ Example:
                     "scanstatus": "1"
                 }
             ],
-            "sn": 1003,
+            "sn": Q186I15815,
             "result": "1"
         }
     ]
