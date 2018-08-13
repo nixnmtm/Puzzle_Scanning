@@ -8,7 +8,7 @@ def pci_info():
 
     """Retrieves PCIe information in the device"""
 
-    cmd = "echo 8888 | sudo -S lshw -c network -businfo | grep pci"
+    cmd = "lshw -c network -businfo | grep pci"
     (_, out, err) = pzl.execute_cmd(cmd)
 
     ids = []
@@ -60,7 +60,7 @@ def pci_info():
     return info
 
 def cpu_info():
-    cmd = "echo 8888 | sudo -S lscpu"
+    cmd = "lscpu"
     info["cpuinfo"] = {}
     (_, out, err) = pzl.execute_cmd(cmd)
     for line in out.splitlines():
