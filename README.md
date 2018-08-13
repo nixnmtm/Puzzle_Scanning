@@ -88,3 +88,11 @@ Example:
 }
 
 ```
+
+## Notification
+
+{
+"id" : "1",
+"status" : "1 devices passed scanning"
+}
+
