@@ -46,7 +46,7 @@ def get_mesdevinfo(url, devid):
         mesdevinfo = json.loads(mesdevinfo.text)
         if mesdevinfo["info"] == "Device is not registered":
             logging.error("{} is not registered".format(devid))
-            notify(devid, "Device not registered")
+            #notify(devid, "Device not registered")
             return None
         else:
             if mesdevinfo["info"][0]["serialNo"] == devid:
@@ -251,22 +251,22 @@ def run(host, queue_name, username, password, port):
 
 if __name__ == '__main__':
     
-    mqhost = str(sys.argv[1])
-    mqport = int(sys.argv[2])
-    mqusername = str(sys.argv[3])
-    mqpassword = str(sys.argv[4])
-    apihost = str(sys.argv[5])
-    apiport = int(sys.argv[6])
-    notifyport = int(sys.argv[7])
+    # mqhost = str(sys.argv[1])
+    # mqport = int(sys.argv[2])
+    # mqusername = str(sys.argv[3])
+    # mqpassword = str(sys.argv[4])
+    # apihost = str(sys.argv[5])
+    # apiport = int(sys.argv[6])
+    # notifyport = int(sys.argv[7])
     queue_name = 'hwinfo_queue'
 
-    # mqhost = "10.10.70.89"
-    # mqport = 5672
-    # mqusername = "rmquser"
-    # mqpassword = "123456"
-    # apihost = "10.10.70.89"
-    # apiport = 3000
-    # notifyport = 4000
+    mqhost = "10.10.70.89"
+    mqport = 5672
+    mqusername = "rmquser"
+    mqpassword = "123456"
+    apihost = "10.10.70.89"
+    apiport = 3000
+    notifyport = 4000
 
     devinfo_url = "http://" + apihost + ":"+ str(apiport) +"/puzzle/api/v1/deviceInfo/getById"
     pair_url = "http://"+ apihost +":"+ str(apiport) +"/puzzle/api/v1/operations/pair"
