@@ -7,8 +7,8 @@ pip3 install -r requirements.txt
 serviceName="dScanning"
 projectPath="/home/test/"$serviceName"Client"
 servicePath="/etc/systemd/system/"
-rm -rf $servicePath
-mkdir $servicePath
+rm -rf $projectPath
+mkdir $projectPath
 cp -R device_client $projectPath
 chmod 777 -R $projectPath
 cp ./${serviceName}.service $servicePath

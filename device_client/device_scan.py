@@ -5,8 +5,8 @@ import pika
 import json
 import logging
 import requests
-#from device_client.utils import pzlutils, hwinfo
-from utils import pzlutils, hwinfo
+from device_client.utils import pzlutils, hwinfo
+#from utils import pzlutils, hwinfo
 
 pzl = pzlutils.PZLutils()
 #logging.basicConfig(filename='dev_consume.log', level=logging.INFO, filemode='w')
@@ -14,7 +14,8 @@ logging.basicConfig(level=logging.INFO)
 
 def populate_data(data):
     hw_info = {}
-    get_dev_slno = pzl.this_device_slno()
+    #get_dev_slno = pzl.this_device_slno()
+    get_dev_slno = sn
     logging.info("Populating hardware datas from device ===> Sl.No: {}".format(get_dev_slno))
     hw_info["operationId"] = data["operationId"]
     hw_info["sn"] = get_dev_slno
