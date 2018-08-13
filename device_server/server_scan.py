@@ -121,6 +121,7 @@ def notify(dev, status):
             note["id"] = dev
             note["status"] = status
             senddata = json.dumps(note)
+            print(senddata)
             logging.info("Sending notification of {}".format(dev))
             requests.post(url=notifyurl, headers=headers, data=senddata)
 

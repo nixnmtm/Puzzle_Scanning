@@ -65,7 +65,6 @@ def calldeviceInfoApi(data):
     url = 'http://{}:{}/deviceInfo'.format("localhost", 8882)
     headers = {'Content-type': 'application/json'}
     r = requests.post(url, data, headers=headers)
-    print(r.text)
     print('Response Code: ', r.status_code)
     retData = {}
     if r.status_code == 200:
@@ -121,6 +120,7 @@ def myInput():
         retData["result"] = 2
     return retData
 
+
 if __name__ == '__main__':
 
     myInputData = myInput()
@@ -128,7 +128,6 @@ if __name__ == '__main__':
         mqdata = myInputData["rabbitMQ"]
         sn = myInputData["sn"]
         print(mqdata)
-        print(sn)
 
     # mqhost = '10.10.70.89'
     # mqport = 5672
