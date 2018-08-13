@@ -41,6 +41,7 @@ Example:
 ```
 {
     "operationid": 1,
+    "pairInfo": [],
     "scaninfo": [
         {
             "macinfo": [
