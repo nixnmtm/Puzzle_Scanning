@@ -46,7 +46,7 @@ def get_mesdevinfo(url, devid):
         mesdevinfo = json.loads(mesdevinfo.text)
         if mesdevinfo["info"] == "Device is not registered":
             logging.error("{} is not registered".format(devid))
-            devfound.remove(devid)
+            devfound.remove(devid) # if not registrered remove from devices found
             #notify(devid, "Device not registered")
             return None
         else:
@@ -100,7 +100,7 @@ def accumulate_all(all_dev):
         return(alldevresponse)
     except Exception as e:
         logging.error("Error in accumulating data" + str(e))
-        notify(all_dev["operationId"], "Some internal error has occurred")
+        #notify(all_dev["operationId"], "Some internal error has occurred")
 
 def notify(dev, status):
 
