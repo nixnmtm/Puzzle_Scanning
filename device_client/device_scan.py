@@ -130,11 +130,6 @@ if __name__ == '__main__':
         sn = myInputData["sn"]
         print(mqdata)
 
-    # mqhost = '10.10.70.89'
-    # mqport = 5672
-    # mqusername = "rmquser"
-    # mqpassword = "123456"
-
     # mqhost = str(sys.argv[1])
     # mqport = int(sys.argv[2])
     # mqusername = str(sys.argv[3])
