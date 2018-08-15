@@ -105,7 +105,8 @@
 #### Format of notification to Pair API
 
 ```
-{"snArray" : ["Q186I15815", "V123821038SDF"],
+{
+"snArray" : ["Q186I15815", "V123821038SDF"],
 "operationId": "shgbshjhdstiuy978677"
 }
 
