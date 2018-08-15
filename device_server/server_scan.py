@@ -46,6 +46,7 @@ def get_mesdevinfo(url, devid):
         mesdevinfo = json.loads(mesdevinfo.text)
         if mesdevinfo["info"] == "Device is not registered":
             logging.error("{} is not registered".format(devid))
+            devfound.remove(devid)
             #notify(devid, "Device not registered")
             return None
         else:
@@ -61,14 +62,13 @@ def compareMES(locdata, mesdata):
     try:
         for k, v in locdata["macinfo"].items():
             for i in mesdata:
-                if k == i.get("interface"):
-                #if k == "enp3s0":
-                    if v.get("macaddr") == i.get("macaddr"):
-                        locdata["macinfo"][k]["scanstatus"] = "1"
-                    else:
-                        locdata["macinfo"][k]["scanstatus"] = "0"
+                #if k == i.get("interface"):
+                if v.get("macaddr") == i.get("macaddr"):
+                    locdata["macinfo"][k]["scanstatus"] = "1"
                 else:
                     locdata["macinfo"][k]["scanstatus"] = "0"
+                #else:
+                #    locdata["macinfo"][k]["scanstatus"] = "0"
         return locdata
     except Warning:
         logging.warning("Comparing MES data Failed")
@@ -123,10 +123,11 @@ def notify(dev, status):
             senddata = json.dumps(note)
             print(senddata)
             logging.info("Sending notification of {}".format(dev))
-            requests.post(url=notifyurl, headers=headers, data=senddata)
+            r = requests.post(url=notifyurl, headers=headers, data=senddata)
+            logging.info('Notification Response Code: {}'.format(r.status_code))
 
         except Exception as e:
-            logging.error("Damn, error in posting notofocation")
+            logging.error("Damn, error in posting notification")
 
 def postlog_deviceinfo(info):
 
@@ -138,7 +139,8 @@ def postlog_deviceinfo(info):
             print(senddata)
             # print("Final Data:\n{}".format(json.dumps(finaldict, sort_keys=True, indent=4, separators=(',', ': '))))
             logging.info("Posting device info")
-            requests.post(url=log_url, headers=headers, data=senddata)
+            r = requests.post(url=log_url, headers=headers, data=senddata)
+            logging.info('Log Response Code: {}'.format(r.status_code))
 
         except Exception as e:
             logging.error("Damn, error in posting device info")
@@ -156,7 +158,8 @@ def post2pair(devs, operationid):
         senddata = json.dumps(pairdevs)
         print(senddata)
         logging.info("Posting successful devices to pair")
-        requests.post(url=pair_url, headers=headers, data=senddata)
+        r = requests.post(url=pair_url, headers=headers, data=senddata)
+        logging.info('Pair Response Code: {}'.format(r.status_code))
 
     except Exception as e:
         logging.error("Damn, error in posting devices to pair")
@@ -174,7 +177,6 @@ def checkNupdate(devfound, updatedict):
                     devsucess.append(i)
                 else:
                     updatedict["scanInfo"][index[0]]["result"] = '0'
-                    #notify(i, "Errors Found")
             return updatedict
     except Exception as e:
         logging.warning("Device scan result update failed" + str(e))
@@ -187,9 +189,7 @@ def scanningReal():
     """
     global all_dev
     global devfound
-
     try:
-        print()
         if len(accumulate_all(all_dev)["scanInfo"]) == len(devfound):
             logging.info("Number of devices received and collected match")
         else:
@@ -206,7 +206,7 @@ def scanningReal():
         devfound = []
     except Exception as e:
         logging.error("Real scanning failed" + str(e))
-        notify(all_dev["operationId"], "Scanning failed, some internal error has occured")
+        #notify(all_dev["operationId"], "Scanning failed, some internal error has occured")
 
 
 timer_id=None
@@ -214,25 +214,28 @@ def callback(ch, method, properties, body):
 
     """Receive local_device info and
     do compare adn send number of devices found"""
+    try:
+        # Timer for stop receiving
+        global timer_id
+        if timer_id is not None:
+            ch.connection.remove_timeout(timer_id)
+        data = read_json(json_data=body)
+        logging.info("Received in server:\n{}".format(data))
+        local_devid = data["sn"]
+        devfound.append(local_devid) # collect the devices replied
+        # mesinfo comparision
+        mesmacinfo = get_mesdevinfo(url=devinfo_url, devid=local_devid)
+        if not mesmacinfo: # if MES info is None, send ack, so that next msg can be received
+            ch.basic_ack(delivery_tag=method.delivery_tag)
+            timer_id = ch.connection.add_timeout(10, scanningReal)
+        else:
+            scanned = compareMES(data, mesmacinfo)
+            timer_id = ch.connection.add_timeout(10, scanningReal)  # timeout, send received details and resume consuming
+            all_dev.append(scanned)
+            ch.basic_ack(delivery_tag = method.delivery_tag)
+    except Exception as e:
+        logging.warning("Some internal error has occured")
 
-    # Timer for stop receiving
-    global timer_id
-    if timer_id is not None:
-        ch.connection.remove_timeout(timer_id)
-    data = read_json(json_data=body)
-    logging.info("Received in server:\n{}".format(data))
-    local_devid = data["sn"]
-    devfound.append(local_devid) # collect the devices replied
-    # mesinfo comparision
-    mesmacinfo = get_mesdevinfo(url=devinfo_url, devid=local_devid)
-    if not mesmacinfo: # if MES info is None, send ack, so that next msg can be received
-        ch.basic_ack(delivery_tag=method.delivery_tag)
-        timer_id = ch.connection.add_timeout(10, scanningReal)
-    else:
-        scanned = compareMES(data, mesmacinfo)
-        timer_id = ch.connection.add_timeout(10, scanningReal)  # timeout, send received details and resume consuming
-        all_dev.append(scanned)
-        ch.basic_ack(delivery_tag = method.delivery_tag)
 
 
 def run(host, queue_name, username, password, port):
@@ -252,27 +255,27 @@ def run(host, queue_name, username, password, port):
 
 if __name__ == '__main__':
     
-    mqhost = str(sys.argv[1])
-    mqport = int(sys.argv[2])
-    mqusername = str(sys.argv[3])
-    mqpassword = str(sys.argv[4])
-    apihost = str(sys.argv[5])
-    apiport = int(sys.argv[6])
-    notifyport = int(sys.argv[7])
+    # mqhost = str(sys.argv[1])
+    # mqport = int(sys.argv[2])
+    # mqusername = str(sys.argv[3])
+    # mqpassword = str(sys.argv[4])
+    # apihost = str(sys.argv[5])
+    # apiport = int(sys.argv[6])
+    # notifyport = int(sys.argv[7])
     queue_name = 'hwinfo_queue'
 
-    # mqhost = "10.10.70.89"
-    # mqport = 5672
-    # mqusername = "rmquser"
-    # mqpassword = "123456"
-    # apihost = "10.10.70.89"
-    # apiport = 3000
-    # notifyport = 4000
+    mqhost = "10.10.70.89"
+    mqport = 5672
+    mqusername = "rmquser"
+    mqpassword = "123456"
+    apihost = "10.10.70.89"
+    apiport = 3000
+    notifyport = 3000
 
     devinfo_url = "http://" + apihost + ":"+ str(apiport) +"/puzzle/api/v1/deviceInfo/getById"
     pair_url = "http://"+ apihost +":"+ str(apiport) +"/puzzle/api/v1/operations/pair"
     log_url = "http://"+ apihost +":"+ str(apiport) +"/puzzle/api/v1/log/deviceScan"
-    notifyurl = "http://"+ apihost +":"+ str(notifyport) +"/notifications/devicescan"
+    notifyurl = "http://"+ apihost +":"+ str(notifyport) +"/puzzle/api/v1/notifications/devicescan"
 
     run(mqhost, queue_name, mqusername, mqpassword, mqport)
 
