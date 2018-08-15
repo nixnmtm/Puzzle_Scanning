@@ -94,11 +94,21 @@
 
 #### Format of notification send to Notification API
 
-'''
+```
 {
-"id" : "shgbshjhdstiuy978677",
-"status" : "2 devices passed scanning"
+    "id" : "shgbshjhdstiuy978677",
+    "status" : "2 devices passed scanning"
 }
-'''
+```
 
 
+#### Format of notification to Pair API
+
+```
+{"snArray" : ["Q186I15815", "V123821038SDF"],
+"operationId": "shgbshjhdstiuy978677"
+}
+
+```
+
+**Refer cmds.md for service related commands**
